@@ -1,0 +1,1008 @@
+Voy a estructurarte Sabueso como un SaaS multi-tenant completo: módulos, flujo, roles, arquitectura, base de datos y opciones de monetización.
+
+Pensó durante 5s
+
+La idea de Sabueso tiene bastante potencial porque resuelve un problema real: el usuario no tendría que llamar o visitar muchas tiendas buscando una pieza; publica una solicitud y las tiendas compiten enviándole ofertas.
+
+Concepto general
+
+Sabueso sería una plataforma tipo marketplace inverso de repuestos:
+
+El usuario publica el repuesto que necesita y las tiendas responden con disponibilidad, condición, precio, garantía y opciones de entrega.
+
+El sistema tendría tres áreas principales:
+
+Aplicación para clientes
+Panel para tiendas de repuestos
+Panel administrativo de Sabueso
+1. Flujo principal del sistema
+Paso 1: el usuario registra el vehículo
+
+El usuario puede guardar uno o varios vehículos en su perfil:
+
+Marca
+Modelo
+Año
+Versión
+Motor
+Tipo de combustible
+Transmisión
+Tracción
+Número VIN
+Número de placa, opcional
+País de fabricación
+Fotografía del vehículo
+Observaciones
+
+Creo que cuando mencionaste “BIN” te referías al VIN, que es el número de identificación del vehículo.
+
+Ejemplo:
+
+Marca: Mazda
+Modelo: Mazda 3
+Año: 2006
+Versión: Sedán
+Motor: 1.6
+Transmisión: Automática
+VIN: JM7BK...
+
+El usuario podría reutilizar ese vehículo para futuras solicitudes.
+
+Paso 2: crea una solicitud de repuesto
+
+La solicitud debe incluir:
+
+Vehículo
+Nombre del repuesto
+Categoría
+Lado de instalación
+Posición
+Cantidad
+Descripción
+Fotografías
+Número de pieza, si lo conoce
+Condición aceptada
+Presupuesto aproximado, opcional
+Ciudad o departamento
+Método de entrega preferido
+Nivel de urgencia
+Fecha límite para recibir ofertas
+
+Ejemplo:
+
+Repuesto: Tijera delantera
+Lado: Izquierdo
+Vehículo: Mazda 3, año 2006, motor 1.6
+Condición aceptada: Nueva o usada en buen estado
+Ubicación: Tegucigalpa
+Urgencia: Alta
+Estados de la solicitud
+BORRADOR
+PUBLICADA
+RECIBIENDO_OFERTAS
+OFERTA_SELECCIONADA
+EN_NEGOCIACION
+EN_PROCESO
+COMPLETADA
+CANCELADA
+EXPIRADA
+2. Sistema profesional de compatibilidad
+
+Uno de los mayores problemas del mercado de repuestos es que una pieza puede parecer correcta, pero no ser compatible.
+
+Por eso, cada oferta debe indicar:
+
+Compatible confirmado
+Compatible por revisar
+Compatible según VIN
+Compatible según número de pieza
+Requiere comparación física
+
+La tienda también debería responder preguntas como:
+
+¿Es compatible con el VIN indicado?
+¿El repuesto incluye accesorios?
+¿Es necesario entregar la pieza vieja?
+¿Requiere adaptación?
+
+La plataforma puede mostrar una advertencia:
+
+La compatibilidad debe confirmarse mediante VIN, número de pieza o revisión física antes de realizar la compra.
+
+Más adelante podrías incorporar un catálogo de compatibilidades entre:
+
+Marca
+Modelo
+Año
+Motor
+Versión
+Número OEM
+Números alternativos
+3. Ofertas de las tiendas
+
+Cada tienda podría enviar una oferta con:
+
+Precio
+Tipo de repuesto
+Marca del fabricante
+Estado
+Disponibilidad
+Cantidad disponible
+Garantía
+Tiempo de entrega
+Costo de envío
+Método de pago
+Dirección de retiro
+Fotografías reales
+Video opcional
+Número OEM
+Número alternativo
+Observaciones
+Tipo de repuesto
+
+No lo limitaría solamente a original o genérico. Agregaría:
+
+ORIGINAL_OEM
+ORIGINAL_USADO
+GENERICO_NUEVO
+REMANUFACTURADO
+RECONSTRUIDO
+ALTERNATIVO
+DESARMADERO
+
+También se puede indicar:
+
+Nuevo
+Usado
+Como nuevo
+Reparado
+Con detalles
+Para reconstrucción
+Oferta detallada
+
+Ejemplo:
+
+Tienda: Repuestos El Motor
+Precio: L 2,450.00
+Tipo: Genérico nuevo
+Marca: CTR
+Garantía: 30 días
+Disponibilidad: Inmediata
+Entrega: Hoy
+Envío: L 100.00
+Compatibilidad: Confirmada según VIN
+4. Comparador de ofertas
+
+El cliente debería ver las ofertas en una tabla o tarjetas comparativas.
+
+Podría comparar:
+
+Precio total
+Precio del repuesto
+Envío
+Garantía
+Condición
+Marca
+Compatibilidad
+Distancia
+Tiempo de entrega
+Calificación de la tienda
+
+No recomiendo ordenar solamente por precio. Puedes crear una opción llamada:
+
+Mejor oferta
+
+Calculada mediante:
+
+Precio
++ reputación de la tienda
++ garantía
++ rapidez de entrega
++ compatibilidad confirmada
++ distancia
++ historial de ventas
+
+Esto evitará que siempre gane la oferta más barata, aunque sea la menos confiable.
+
+5. Comunicación entre cliente y tienda
+
+Cada solicitud debe tener un chat interno.
+
+Funciones:
+
+Mensajes de texto
+Envío de fotografías
+Envío de videos cortos
+Envío de ubicación
+Respuestas rápidas
+Confirmación de compatibilidad
+Mensajes automáticos
+Indicador de mensaje leído
+Bloqueo y reporte
+Historial de conversación
+
+Ejemplos de respuestas rápidas para la tienda:
+
+Sí, tenemos el repuesto disponible.
+Necesitamos una fotografía adicional.
+Envíenos los últimos 8 caracteres del VIN.
+La pieza está disponible para entrega inmediata.
+Este precio incluye garantía.
+
+Para proteger el negocio de Sabueso, puedes ocultar inicialmente el teléfono del cliente y permitir la negociación dentro de la plataforma.
+
+6. Reservas y compras
+
+Sabueso podría comenzar solamente conectando usuarios con tiendas. Sin embargo, lo más profesional sería incorporar después un flujo de compra.
+
+Flujo recomendado
+Oferta recibida
+→ Usuario selecciona oferta
+→ Tienda confirma inventario
+→ Usuario reserva o paga
+→ Tienda prepara pedido
+→ Pedido enviado o listo para retirar
+→ Usuario recibe
+→ Usuario califica
+Estados de una orden
+PENDIENTE_CONFIRMACION
+CONFIRMADA
+PENDIENTE_PAGO
+PAGADA
+PREPARANDO
+LISTA_PARA_RETIRO
+ENVIADA
+ENTREGADA
+CANCELADA
+REEMBOLSADA
+EN_DISPUTA
+Modalidades
+Retiro en tienda
+Envío local
+Envío nacional
+Entrega por motorista
+Pago contra entrega
+Transferencia
+Tarjeta
+Efectivo en tienda
+7. Sistema de reputación
+
+El usuario debería poder calificar:
+
+Calidad del repuesto
+Compatibilidad
+Precio
+Atención
+Rapidez
+Cumplimiento de garantía
+
+La tienda también podría calificar al comprador en aspectos limitados:
+
+Cumplió con la compra
+Asistió al retiro
+Comunicación adecuada
+
+Para evitar calificaciones falsas, solamente permitiría calificar cuando exista una orden completada.
+
+Insignias para tiendas
+Tienda verificada
+Responde rápidamente
+Vendedor destacado
+Especialista en Mazda
+Especialista en vehículos japoneses
+Más de 100 ventas
+Compatibilidad garantizada
+Entrega rápida
+8. Membresías para tiendas
+
+El modelo de suscripción es correcto, pero podrías combinar membresía y servicios adicionales.
+
+Plan Básico
+Un usuario
+Una sucursal
+Cantidad limitada de ofertas mensuales
+Perfil público
+Chat con clientes
+Notificaciones
+Reportes básicos
+Plan Profesional
+Varios usuarios
+Hasta tres sucursales
+Ofertas ilimitadas
+Catálogo de productos
+Inventario básico
+Estadísticas
+Respuestas automáticas
+Mayor visibilidad
+Insignia de tienda verificada
+Plan Empresarial
+Sucursales ilimitadas o configurables
+Roles y permisos
+Integración mediante API
+Importación masiva de inventario
+Reportes avanzados
+Dominio o página personalizada
+Prioridad en solicitudes
+Soporte preferencial
+Integración con sistema de facturación
+Otros ingresos
+
+También puedes monetizar mediante:
+
+Publicaciones destacadas
+Tiendas patrocinadas
+Comisión por venta
+Costo por contacto desbloqueado
+Paquetes de ofertas
+Publicidad de talleres
+Publicidad de aseguradoras
+Publicidad de lubricantes
+Venta de reportes del mercado
+Integraciones empresariales
+Servicio de entrega
+9. Multiempresa o multi-tenant
+
+Para comenzar, te recomiendo:
+
+Base de datos compartida con tenant_id
+
+Todas las tiendas utilizan la misma base de datos, pero cada registro relacionado con una tienda lleva:
+
+tenant_id
+
+Ejemplo:
+
+productos
+- id
+- tenant_id
+- nombre
+- precio
+- existencia
+ofertas
+- id
+- tenant_id
+- solicitud_id
+- precio
+- estado
+
+La aplicación debe obtener el tenant desde la sesión autenticada, nunca desde un valor confiado directamente al frontend.
+
+OWASP recomienda que la separación entre tenants se aplique en cada capa, incluyendo autenticación, autorización, consultas, caché, almacenamiento y registros de auditoría. También aconseja evitar identificadores secuenciales fáciles de adivinar para recursos expuestos públicamente.
+
+Regla fundamental
+
+Nunca hacer esto:
+
+const tenantId = req.body.tenant_id;
+
+Mejor:
+
+const tenantId = req.user.tenantId;
+
+Y todas las consultas deben filtrar por tenant:
+
+SELECT *
+FROM ofertas
+WHERE id = ?
+  AND tenant_id = ?;
+
+Aunque una tienda modifique un ID en la URL, no debería poder consultar información de otra empresa.
+
+10. Roles del sistema
+Plataforma Sabueso
+SUPER_ADMIN
+ADMIN_SOPORTE
+ADMIN_COMERCIAL
+ADMIN_FINANZAS
+MODERADOR
+Tienda
+PROPIETARIO
+ADMINISTRADOR
+VENDEDOR
+BODEGA
+CAJERO
+SUPERVISOR
+REPARTIDOR
+Cliente
+CLIENTE
+MECANICO
+TALLER
+EMPRESA
+FLOTILLA
+
+Un mecánico o taller podría tener funciones adicionales:
+
+Administrar vehículos de clientes
+Solicitar varias piezas
+Crear listas de repuestos
+Recibir cotizaciones formales
+Descargar cotizaciones PDF
+Mantener historial por vehículo
+11. Módulos para la tienda
+
+El panel de la tienda debería contener:
+
+Dashboard
+Solicitudes nuevas
+Solicitudes cercanas
+Ofertas enviadas
+Ofertas aceptadas
+Ventas
+Tasa de conversión
+Tiempo promedio de respuesta
+Productos más solicitados
+Solicitudes sin atender
+Ingresos estimados
+Bandeja de solicitudes
+
+Filtros por:
+
+Marca
+Modelo
+Año
+Categoría
+Ciudad
+Urgencia
+Fecha
+Tipo de pieza
+Solicitudes con VIN
+Solicitudes con fotografía
+Presupuesto
+Ofertas
+Enviadas
+Vistas
+Respondidas
+Aceptadas
+Rechazadas
+Vencidas
+Retiradas
+Catálogo
+
+La tienda podría registrar su inventario:
+
+Producto
+Categoría
+Número OEM
+Números alternativos
+Marca
+Compatibilidades
+Precio
+Existencia
+Ubicación de bodega
+Imágenes
+Condición
+Garantía
+
+Cuando aparezca una solicitud compatible, Sabueso podría notificar automáticamente a la tienda.
+
+12. Motor de coincidencias
+
+Esta sería una de las funciones más valiosas.
+
+Cuando un usuario solicite:
+
+Tijera izquierda Mazda 3 2006
+
+El sistema buscaría tiendas que tengan:
+
+Misma categoría
+Misma marca
+Mismo modelo
+Rango de años compatible
+Mismo motor
+Mismo número OEM
+Ubicación cercana
+Puntaje de coincidencia
+Número OEM exacto: 50 puntos
+Mismo modelo: 20 puntos
+Mismo año: 10 puntos
+Mismo motor: 10 puntos
+Misma ciudad: 5 puntos
+Disponible: 5 puntos
+
+Resultado:
+
+Compatibilidad estimada: 95%
+
+Debe mostrarse como estimación hasta que la tienda confirme.
+
+13. Notificaciones
+
+Sabueso debería manejar:
+
+Notificaciones internas
+Correo electrónico
+WhatsApp
+SMS
+Notificaciones push PWA
+Eventos importantes
+
+Para el cliente:
+
+Una tienda envió una oferta
+La tienda respondió
+La oferta está por vencer
+El pedido está listo
+El pedido fue enviado
+La garantía está por finalizar
+
+Para la tienda:
+
+Nueva solicitud compatible
+Solicitud urgente en su ciudad
+El cliente vio la oferta
+El cliente escribió
+Oferta aceptada
+Membresía por vencer
+Pago rechazado
+
+Para tiempo real puedes utilizar:
+
+Socket.IO
+14. Verificación de tiendas
+
+Antes de activar una tienda solicitaría:
+
+Nombre comercial
+Razón social
+RTN
+Identidad del propietario
+Dirección
+Teléfono
+Correo
+Fotografías del negocio
+Ubicación GPS
+Documento de constitución, opcional
+Cuenta bancaria
+Políticas de garantía
+
+Estados:
+
+PENDIENTE
+EN_REVISION
+VERIFICADA
+RECHAZADA
+SUSPENDIDA
+BLOQUEADA
+15. Garantías y disputas
+
+Para profesionalizar el sistema:
+
+Registro de garantía
+Fecha de compra
+Duración
+Condiciones
+Factura
+Fotografías
+Número de serie
+Motivo de reclamo
+Disputa
+ABIERTA
+ESPERANDO_TIENDA
+ESPERANDO_CLIENTE
+EN_REVISION
+RESUELTA_CLIENTE
+RESUELTA_TIENDA
+CERRADA
+
+Motivos:
+
+Repuesto incompatible
+Producto diferente
+Producto dañado
+No recibido
+Garantía no respetada
+Precio diferente
+Pieza incompleta
+16. Panel administrativo de Sabueso
+
+Como propietario debes poder administrar:
+
+Tenants
+Tiendas
+Sucursales
+Usuarios
+Membresías
+Planes
+Pagos
+Solicitudes
+Ofertas
+Órdenes
+Disputas
+Categorías
+Marcas
+Modelos
+Versiones
+Motores
+Números OEM
+Notificaciones
+Promociones
+Cupones
+Comisiones
+Reportes
+Configuración
+Auditoría
+Dashboard administrativo
+Tiendas activas
+Tiendas en prueba
+Membresías vencidas
+Ingreso mensual recurrente
+Tasa de cancelación
+Solicitudes publicadas
+Ofertas enviadas
+Solicitudes resueltas
+Promedio de ofertas por solicitud
+Ciudades con mayor demanda
+Repuestos más buscados
+Marcas más consultadas
+17. Base de datos inicial
+
+Una estructura bastante completa podría contener:
+
+tenants
+tenant_configuraciones
+tenant_planes
+tenant_suscripciones
+tenant_pagos
+
+sucursales
+usuarios
+roles
+permisos
+usuario_roles
+rol_permisos
+
+clientes
+direcciones
+vehiculos
+vehiculo_imagenes
+
+marcas
+modelos
+versiones
+motores
+transmisiones
+
+categorias_repuestos
+repuestos_catalogo
+repuesto_compatibilidades
+repuesto_numeros_oem
+repuesto_numeros_alternativos
+
+solicitudes
+solicitud_imagenes
+solicitud_estados_historial
+solicitud_preguntas
+
+ofertas
+oferta_imagenes
+oferta_condiciones
+oferta_estados_historial
+
+conversaciones
+conversacion_participantes
+mensajes
+mensaje_archivos
+
+productos
+producto_imagenes
+producto_existencias
+producto_compatibilidades
+bodegas
+movimientos_inventario
+
+ordenes
+orden_detalles
+orden_estados_historial
+pagos
+envios
+retiros_tienda
+
+garantias
+reclamos
+disputas
+disputa_evidencias
+
+calificaciones
+tienda_insignias
+
+notificaciones
+preferencias_notificaciones
+
+planes
+plan_caracteristicas
+suscripciones
+facturas_saas
+cupones
+
+auditoria
+sesiones
+intentos_acceso
+reportes_usuarios
+18. Uso de JSON en MySQL
+
+Puedes utilizar columnas JSON para datos secundarios o variables, pero no para reemplazar relaciones importantes.
+
+Ejemplo:
+
+datos_adicionales JSON
+
+Podría contener:
+
+{
+  "color": "gris",
+  "numero_puertas": 4,
+  "pais_fabricacion": "Japón"
+}
+
+Sin embargo, datos que vas a filtrar constantemente, como marca, modelo, año, motor o tenant_id, deben tener columnas propias e índices.
+
+MySQL permite crear columnas generadas para extraer valores de campos JSON e indexarlos cuando sea necesario.
+
+19. Arquitectura tecnológica
+Frontend
+React
+Vite
+React Router
+TanStack Query
+Zustand o Context API
+Bootstrap o Tailwind CSS
+Socket.IO Client
+PWA
+
+Yo utilizaría TanStack Query para datos del servidor y Zustand solamente para estados globales pequeños, como sesión, tenant seleccionado, carrito o configuración visual.
+
+React recomienda mantener el estado mínimo, evitar información duplicada y elevar el estado únicamente cuando varios componentes realmente necesitan compartirlo.
+
+Backend
+Node.js
+Express
+MySQL
+Socket.IO
+JWT o sesiones seguras
+Redis
+BullMQ
+Multer
+Sharp
+Zod
+Pino
+Infraestructura
+Frontend: Vercel
+Backend: Railway, Render, AWS o VPS
+Base de datos: MySQL administrado
+Archivos: Cloudinary, S3 o Cloudflare R2
+Redis: Upstash o Redis administrado
+Correo: Resend, Brevo o Amazon SES
+
+No guardaría fotografías directamente en MySQL. Guardaría los archivos en almacenamiento de objetos y solamente la URL y metadatos en la base de datos.
+
+20. Organización del backend
+src/
+├── config/
+├── controllers/
+├── services/
+├── repositories/
+├── routes/
+├── middlewares/
+├── validators/
+├── sockets/
+├── jobs/
+├── events/
+├── policies/
+├── utils/
+├── constants/
+└── modules/
+    ├── auth/
+    ├── tenants/
+    ├── users/
+    ├── vehicles/
+    ├── requests/
+    ├── offers/
+    ├── inventory/
+    ├── orders/
+    ├── subscriptions/
+    ├── payments/
+    ├── chat/
+    └── notifications/
+
+No pondría toda la lógica dentro de los controladores.
+
+Separaría:
+
+Route
+→ Middleware
+→ Controller
+→ Service
+→ Repository
+→ MySQL
+21. Seguridad
+
+El sistema necesitaría como mínimo:
+
+Contraseñas con Argon2 o bcrypt
+Access token de corta duración
+Refresh token rotativo
+Verificación de correo
+Recuperación segura de contraseña
+Autenticación de dos factores para tiendas
+Rate limiting
+Helmet
+CORS restringido
+Validación con Zod
+Consultas parametrizadas
+Control por tenant
+Control por rol y permiso
+Registro de auditoría
+Cierre de sesiones
+Protección contra fuerza bruta
+Antivirus o validación de archivos
+URLs firmadas para documentos privados
+Copias de seguridad
+Logs sin contraseñas ni tokens
+
+Node.js recomienda configurar límites de tiempo del servidor, controlar el número de conexiones, evitar bloquear el event loop y utilizar un proxy inverso en producción. Express también recomienda TLS, Helmet, validación de entradas y cookies configuradas de forma segura.
+
+22. Funciones diferenciadoras
+
+Estas funciones podrían hacer que Sabueso destaque:
+
+Búsqueda mediante fotografía
+
+El usuario sube una fotografía y el sistema le sugiere:
+
+Categoría probable
+Nombre del repuesto
+Posición
+Piezas visualmente similares
+
+Al principio puede funcionar como asistencia, no como confirmación absoluta.
+
+Escaneo del VIN
+
+El usuario toma una fotografía del VIN y el sistema intenta leerlo automáticamente.
+
+Solicitud mediante audio
+
+El usuario graba:
+
+Busco una tijera izquierda para Mazda 3 2006 motor 1.6.
+
+El sistema convierte el audio a texto y prepara la solicitud.
+
+Lista para mecánicos
+
+El mecánico puede solicitar varias piezas:
+
+2 amortiguadores delanteros
+1 tijera izquierda
+1 juego de terminales
+1 soporte de motor
+
+Las tiendas pueden ofertar por toda la lista o por productos individuales.
+
+Alertas inteligentes
+
+La tienda configura intereses:
+
+Mazda
+Toyota
+Honda
+Tegucigalpa
+Suspensión
+Motor
+Transmisión
+
+Solamente recibe solicitudes relacionadas.
+
+Solicitud privada
+
+El usuario puede enviar la solicitud únicamente a:
+
+Tiendas verificadas
+Tiendas cercanas
+Tiendas especialistas
+Tiendas seleccionadas
+Cotización PDF
+
+La tienda genera una cotización formal con:
+
+Logotipo
+RTN
+Datos del cliente
+Productos
+Garantía
+Vigencia
+Impuestos
+Total
+23. MVP recomendado
+
+No intentaría construir todo desde el inicio.
+
+Primera versión
+Cliente
+Registro e inicio de sesión
+Registro de vehículos
+Crear solicitudes
+Subir fotografías
+Ver ofertas
+Comparar ofertas
+Chat
+Seleccionar oferta
+Calificar tienda
+Tienda
+Registro
+Perfil de tienda
+Membresía
+Ver solicitudes
+Filtrar solicitudes
+Enviar ofertas
+Chat
+Administrar usuarios básicos
+Ver estadísticas
+Sabueso
+Administrar tiendas
+Aprobar tiendas
+Crear planes
+Controlar membresías
+Administrar solicitudes
+Moderar reportes
+Dashboard general
+Auditoría
+Segunda etapa
+Órdenes
+Pagos
+Inventario
+Envíos
+Garantías
+Disputas
+PWA
+WhatsApp
+Cotizaciones PDF
+Tercera etapa
+Inteligencia artificial
+Reconocimiento de piezas
+Lectura de VIN
+Compatibilidad automática
+API para grandes tiendas
+Aplicación móvil
+Integración con talleres y aseguradoras
+24. Propuesta de identidad
+
+El nombre Sabueso funciona bien porque representa buscar, rastrear y encontrar.
+
+Una idea de eslogan podría ser:
+
+Sabueso — Encontramos el repuesto que buscas.
+
+Otras opciones:
+
+Sabueso — Tu repuesto está más cerca.
+Sabueso — Publica, compara y encuentra.
+Sabueso — La forma inteligente de encontrar repuestos.
+Sabueso — Rastreando el repuesto correcto.
+
+Visualmente podría usar un sabueso moderno combinado con:
+
+Una lupa
+Un engranaje
+La silueta de un automóvil
+Una huella formada por piezas mecánicas
+Mi recomendación principal
+
+El núcleo de Sabueso debería ser:
+
+Vehículo
+→ Solicitud
+→ Coincidencia con tiendas
+→ Ofertas
+→ Comparación
+→ Chat
+→ Selección
+→ Orden
+→ Garantía
+→ Calificación
+
+La característica que más valor aportaría no sería únicamente mostrar solicitudes, sino construir un motor de compatibilidad y coincidencias que ayude a encontrar la tienda adecuada y reduzca el riesgo de comprar una pieza incorrecta.
+
+Para la primera versión utilizaría una base compartida con tenant_id, un backend modular en Node.js, React como PWA, MySQL y Socket.IO para ofertas y mensajes en tiempo real. Dejaría desde el inicio preparadas las tablas de órdenes, pagos y compatibilidades, aunque algunas funciones todavía no aparezcan en el MVP.
+
